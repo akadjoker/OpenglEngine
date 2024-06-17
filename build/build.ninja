@@ -266,36 +266,27 @@ build core/rebuild_cache: phony core/CMakeFiles/rebuild_cache.util
 
 build cmake_object_order_depends_target_main: phony || cmake_object_order_depends_target_core
 
-build main/CMakeFiles/main.dir/cmake_pch.hxx.gch: CXX_COMPILER__main_Release /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx.cxx | main/CMakeFiles/main.dir/cmake_pch.hxx || cmake_object_order_depends_target_main
+build main/CMakeFiles/main.dir/cmake_pch.hxx.gch: CXX_COMPILER__main_Debug /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx.cxx | main/CMakeFiles/main.dir/cmake_pch.hxx || cmake_object_order_depends_target_main
   DEP_FILE = main/CMakeFiles/main.dir/cmake_pch.hxx.gch.d
-  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -O3 -DNDEBUG -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -std=c++17 -Winvalid-pch -x c++-header -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
+  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -fsanitize=address -fsanitize=undefined -fsanitize=leak -g -Winvalid-pch -std=c++17 -Winvalid-pch -x c++-header -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
   INCLUDES = -I/usr/include/SDL2 -I/media/djoker/code/code2/cpp/Graphics/Engine/core/include -I/media/djoker/code/code2/cpp/Graphics/Engine/core/src -I/media/djoker/code/code2/cpp/Graphics/Engine/main/include -I/media/djoker/code/code2/cpp/Graphics/Engine/main/src
   OBJECT_DIR = main/CMakeFiles/main.dir
   OBJECT_FILE_DIR = main/CMakeFiles/main.dir
   TARGET_COMPILE_PDB = main/CMakeFiles/main.dir/
   TARGET_PDB = ../bin/main.pdb
 
-build main/CMakeFiles/main.dir/src/Scene.cpp.o: CXX_COMPILER__main_Release /media/djoker/code/code2/cpp/Graphics/Engine/main/src/Scene.cpp | main/CMakeFiles/main.dir/cmake_pch.hxx main/CMakeFiles/main.dir/cmake_pch.hxx.gch || cmake_object_order_depends_target_main
+build main/CMakeFiles/main.dir/src/Scene.cpp.o: CXX_COMPILER__main_Debug /media/djoker/code/code2/cpp/Graphics/Engine/main/src/Scene.cpp | main/CMakeFiles/main.dir/cmake_pch.hxx main/CMakeFiles/main.dir/cmake_pch.hxx.gch || cmake_object_order_depends_target_main
   DEP_FILE = main/CMakeFiles/main.dir/src/Scene.cpp.o.d
-  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -O3 -DNDEBUG -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -std=c++17 -Winvalid-pch -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
+  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -fsanitize=address -fsanitize=undefined -fsanitize=leak -g -Winvalid-pch -std=c++17 -Winvalid-pch -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
   INCLUDES = -I/usr/include/SDL2 -I/media/djoker/code/code2/cpp/Graphics/Engine/core/include -I/media/djoker/code/code2/cpp/Graphics/Engine/core/src -I/media/djoker/code/code2/cpp/Graphics/Engine/main/include -I/media/djoker/code/code2/cpp/Graphics/Engine/main/src
   OBJECT_DIR = main/CMakeFiles/main.dir
   OBJECT_FILE_DIR = main/CMakeFiles/main.dir/src
   TARGET_COMPILE_PDB = main/CMakeFiles/main.dir/
   TARGET_PDB = ../bin/main.pdb
 
-build main/CMakeFiles/main.dir/src/main.cpp.o: CXX_COMPILER__main_Release /media/djoker/code/code2/cpp/Graphics/Engine/main/src/main.cpp | main/CMakeFiles/main.dir/cmake_pch.hxx main/CMakeFiles/main.dir/cmake_pch.hxx.gch || cmake_object_order_depends_target_main
+build main/CMakeFiles/main.dir/src/main.cpp.o: CXX_COMPILER__main_Debug /media/djoker/code/code2/cpp/Graphics/Engine/main/src/main.cpp | main/CMakeFiles/main.dir/cmake_pch.hxx main/CMakeFiles/main.dir/cmake_pch.hxx.gch || cmake_object_order_depends_target_main
   DEP_FILE = main/CMakeFiles/main.dir/src/main.cpp.o.d
-  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -O3 -DNDEBUG -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -std=c++17 -Winvalid-pch -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
-  INCLUDES = -I/usr/include/SDL2 -I/media/djoker/code/code2/cpp/Graphics/Engine/core/include -I/media/djoker/code/code2/cpp/Graphics/Engine/core/src -I/media/djoker/code/code2/cpp/Graphics/Engine/main/include -I/media/djoker/code/code2/cpp/Graphics/Engine/main/src
-  OBJECT_DIR = main/CMakeFiles/main.dir
-  OBJECT_FILE_DIR = main/CMakeFiles/main.dir/src
-  TARGET_COMPILE_PDB = main/CMakeFiles/main.dir/
-  TARGET_PDB = ../bin/main.pdb
-
-build main/CMakeFiles/main.dir/src/mainpch.cpp.o: CXX_COMPILER__main_Release /media/djoker/code/code2/cpp/Graphics/Engine/main/src/mainpch.cpp | main/CMakeFiles/main.dir/cmake_pch.hxx main/CMakeFiles/main.dir/cmake_pch.hxx.gch || cmake_object_order_depends_target_main
-  DEP_FILE = main/CMakeFiles/main.dir/src/mainpch.cpp.o.d
-  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -O3 -DNDEBUG -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -std=c++17 -Winvalid-pch -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
+  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g -Wextra -Wall -Wno-sign-compare -Wno-missing-field-initializers -Wundef -Wuninitialized -Wunused -Wno-unused-parameter -Wwrite-strings -Wchar-subscripts -funsigned-char -fsanitize=address -fsanitize=undefined -fsanitize=leak -g -Winvalid-pch -std=c++17 -Winvalid-pch -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx
   INCLUDES = -I/usr/include/SDL2 -I/media/djoker/code/code2/cpp/Graphics/Engine/core/include -I/media/djoker/code/code2/cpp/Graphics/Engine/core/src -I/media/djoker/code/code2/cpp/Graphics/Engine/main/include -I/media/djoker/code/code2/cpp/Graphics/Engine/main/src
   OBJECT_DIR = main/CMakeFiles/main.dir
   OBJECT_FILE_DIR = main/CMakeFiles/main.dir/src
@@ -310,8 +301,9 @@ build main/CMakeFiles/main.dir/src/mainpch.cpp.o: CXX_COMPILER__main_Release /me
 #############################################
 # Link the executable ../bin/main
 
-build ../bin/main: CXX_EXECUTABLE_LINKER__main_Release main/CMakeFiles/main.dir/src/Scene.cpp.o main/CMakeFiles/main.dir/src/main.cpp.o main/CMakeFiles/main.dir/src/mainpch.cpp.o | core/libcore.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || core/libcore.a
-  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -O3 -DNDEBUG
+build ../bin/main: CXX_EXECUTABLE_LINKER__main_Debug main/CMakeFiles/main.dir/src/Scene.cpp.o main/CMakeFiles/main.dir/src/main.cpp.o | core/libcore.a /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so || core/libcore.a
+  FLAGS = -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g
+  LINK_FLAGS = -fsanitize=address -fsanitize=undefined -fsanitize=leak -g -Winvalid-pch
   LINK_LIBRARIES = core/libcore.a  -L/usr/lib/x86_64-linux-gnu  -lSDL2  /usr/lib/x86_64-linux-gnu/libOpenGL.so  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libGLU.so
   OBJECT_DIR = main/CMakeFiles/main.dir
   POST_BUILD = :

@@ -1,0 +1,454 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/bin/main"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_executable",
+			"target_link_options",
+			"target_link_libraries",
+			"add_compile_options",
+			"target_compile_options",
+			"include_directories",
+			"target_precompile_headers"
+		],
+		"files" : 
+		[
+			"main/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 47,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 57,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 51,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 13,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 56,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 30,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 53,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wno-sign-compare"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wno-missing-field-initializers"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wundef"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wuninitialized"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wunused"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wno-unused-parameter"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wwrite-strings"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wchar-subscripts"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-funsigned-char"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fsanitize=address"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fsanitize=undefined"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fsanitize=leak"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Winvalid-pch"
+				},
+				{
+					"fragment" : "-std=c++17"
+				},
+				{
+					"fragment" : "-Winvalid-pch -x c++-header -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 6,
+					"path" : "/usr/include/SDL2"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/core/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/core/src"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/main/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/main/src"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "17"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 7,
+					"header" : "/media/djoker/code/code2/cpp/Graphics/Engine/main/include/pch.h"
+				},
+				{
+					"backtrace" : 3,
+					"header" : "/media/djoker/code/code2/cpp/Graphics/Engine/core/src/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : " -fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wno-sign-compare"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wno-missing-field-initializers"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wundef"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wuninitialized"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wunused"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wno-unused-parameter"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wwrite-strings"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-Wchar-subscripts"
+				},
+				{
+					"backtrace" : 4,
+					"fragment" : "-funsigned-char"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fsanitize=address"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fsanitize=undefined"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fsanitize=leak"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Winvalid-pch"
+				},
+				{
+					"fragment" : "-std=c++17"
+				},
+				{
+					"fragment" : "-Winvalid-pch -include /media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir/cmake_pch.hxx"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 6,
+					"path" : "/usr/include/SDL2"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/core/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/core/src"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/main/include"
+				},
+				{
+					"backtrace" : 3,
+					"path" : "/media/djoker/code/code2/cpp/Graphics/Engine/main/src"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "17"
+			},
+			"precompileHeaders" : 
+			[
+				{
+					"backtrace" : 7,
+					"header" : "/media/djoker/code/code2/cpp/Graphics/Engine/main/include/pch.h"
+				},
+				{
+					"backtrace" : 3,
+					"header" : "/media/djoker/code/code2/cpp/Graphics/Engine/core/src/pch.h"
+				}
+			],
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "core::@57760688d1f824db5d9c"
+		}
+	],
+	"id" : "main::@15c4a824ab2728a3f5e7",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "-fexceptions -frtti -fno-strict-aliasing -O3 -march=native -mtune=native -g",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-fsanitize=address",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-fsanitize=undefined",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-fsanitize=leak",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-g",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "-Winvalid-pch",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "core/libcore.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "-L/usr/lib/x86_64-linux-gnu  -lSDL2",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libOpenGL.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libGLX.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "/usr/lib/x86_64-linux-gnu/libGLU.so",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "main",
+	"nameOnDisk" : "main",
+	"paths" : 
+	{
+		"build" : "main",
+		"source" : "main"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				1,
+				2
+			]
+		},
+		{
+			"name" : "Precompile Header File",
+			"sourceIndexes" : 
+			[
+				3
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"path" : "build/main/CMakeFiles/main.dir/cmake_pch.hxx.cxx",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "main/src/Scene.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "main/src/main.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"path" : "build/main/CMakeFiles/main.dir/cmake_pch.hxx",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "EXECUTABLE"
+}

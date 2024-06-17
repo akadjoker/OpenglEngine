@@ -181,8 +181,6 @@ void Animation::Update(float elapsed)
             state = Playing;
             if (currentTime >= duration)
             {
-              //  OnEnd();
-                OnStart();
                 isEnd = true;
             }
             currentTime = fmod(currentTime, duration);
@@ -201,8 +199,7 @@ void Animation::Update(float elapsed)
             if (currentTime > (duration * 2))
             {
                 isEnd = true;
-                OnEnd();
-          
+         
             }
             if (currentTime < 0.0f)
             {
@@ -225,7 +222,6 @@ void Animation::Update(float elapsed)
                 LogWarning("Stop Animation : %s. Duration : %f. CurrentTime : %f", name.c_str(), duration, currentTime);
 
                 Stop();
-                OnEnd();
             }
         }
     
@@ -251,7 +247,7 @@ void Animation::Update(float elapsed)
             }
 
     }
-        OnLoop(currentTime);
+        
 
 }
 
@@ -378,11 +374,11 @@ void Animator::updateAnim(float elapsed)
 
     if (currentAnimation->IsEnded())
     {
-       OnEnd(currentAnimation->name);
+       
        return;
     };
 
-    OnLoop(currentAnimation->name, currentAnimation->currentTime); 
+
 
     for (size_t i = 0; i < entity->joints.size(); i++) 
     {
@@ -429,7 +425,7 @@ void Animator::updateAnim(float elapsed)
         currentAnimation->Play(mode, currentAnimation->fps); 
         currentAnimation->Force();
 
-        OnStart(name);
+      
 
         this->blendTime = blendTime;
         blendFactor = 0.0f; 

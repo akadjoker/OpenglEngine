@@ -1,4 +1,4 @@
-Opengl Frame Work
+Opengl FrameWork
 
 # Features
     OpenGL Graphics Engine: Advanced rendering using OpenGL.

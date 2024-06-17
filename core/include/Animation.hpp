@@ -214,9 +214,6 @@ class CORE_PUBLIC Animation
     int mode;
     bool isEnd;
 
-    std::function<void()> OnStart;
-    std::function<void()> OnEnd;
-    std::function<void(float)> OnLoop;
 
 
 
@@ -229,9 +226,6 @@ class CORE_PUBLIC Animation
         fps = 30.0f;
         mode = LOOP;
         isEnd = false;
-        OnStart = [](){};
-        OnEnd = [](){};
-        OnLoop = [](float time){(void)time;};
     }
 
     void Force();
@@ -250,7 +244,6 @@ class CORE_PUBLIC Animation
             this->mode = mode;
             this->fps = fps;
             currentTime = 0.0f;
-            OnStart();
             return true;
         }
         return false;
@@ -344,10 +337,7 @@ class CORE_PUBLIC Animator
         currentAnimationName = "";
 
         entity = parent;
-     
-        OnStart = [](const std::string &){};
-        OnLoop = [](const std::string &,float time){(void)time;};
-        OnEnd = [](const std::string &){};
+    
 
      }
 
@@ -423,10 +413,6 @@ class CORE_PUBLIC Animator
 
 
 
-
-    std::function<void(const std::string &)> OnStart;
-    std::function<void(const std::string &)> OnEnd;
-    std::function<void(const std::string &, float)> OnLoop;
 
 
 private:
