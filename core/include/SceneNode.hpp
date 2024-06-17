@@ -9,13 +9,16 @@
 #include "Utils.hpp"
 class Node;
 
+
+
+
 struct CORE_PUBLIC Script
 {
         Script(){id=0;name="";node=nullptr;};
         virtual ~Script(){};
 
         virtual void Load(){};
-        virtual void Update()=0;
+        virtual void Update(float dt)=0;
         virtual void UnLoad(){};
 
         int id;
@@ -29,7 +32,20 @@ struct CORE_PUBLIC Script
 class CORE_PUBLIC Node
 {
 
+    private:
+        std::vector<Script *> scripts;
+
+
+    
+
     public:
+    enum  NodeType
+    {
+        DEFAULT=0,
+        STATIC,
+        ENTITY,
+        JOINT    
+    };
 
     Vec3 position;
     Vec3 scale;
@@ -39,13 +55,13 @@ class CORE_PUBLIC Node
     Mat4 LocalWorld;
 
     Node *parent;
-    std::vector<Script *> scripts;
-
+    
     bool shadow;
     bool visible;
     bool active;
     bool done;
     u64  id{0};
+    NodeType type;
 
     std::string name;
     std::string parentName;
@@ -62,6 +78,7 @@ class CORE_PUBLIC Node
         visible = true;
         active = true;
         done = false;
+
         
     }
 
@@ -101,10 +118,7 @@ class CORE_PUBLIC Node
 
     void SetRotation( float x, float y, float z)
     {
-        //Quaternion q;
-        //q.rotate(Vec3(T(x), ToRadians(y), ToRadians(z)));
-        orientation.setEuler(Vec3(ToRadians(x), ToRadians(y), ToRadians(z)));
-        // orientation.rotate(Vec3(ToRadians(x), ToRadians(y), ToRadians(z)));
+       orientation.setEuler(Vec3(ToRadians(x), ToRadians(y), ToRadians(z)));
     }
 
     void Rotate(float angle, float x, float y, float z)
@@ -112,11 +126,6 @@ class CORE_PUBLIC Node
         Quaternion q;
         q.rotate(angle, x, y, z);
         orientation *= q ;
-
-        // orientation.rotate(angle, x, y, z) * orientation;
-        //  q.rotate(Vec3(T(x), ToRadians(y), ToRadians(z)));
-        //  orientation.rotate(angle, x, y, z);
-        //   orientation.rotate(Vec3(ToRadians(x), ToRadians(y), ToRadians(z)));
     }
 
     void SetRotation(const Quaternion &q)
@@ -138,14 +147,6 @@ class CORE_PUBLIC Node
 
     const Mat4 GetRelativeTransformation()
     {
-        
-        // Mat4 mScale = Mat4::Scale(scale.x, scale.y, scale.z);
-        // Mat4 mRotate = Mat4::Rotate(orientation);
-        // Mat4 mTranslate = Mat4::Translate(position.x, position.y, position.z);
-
-
-        // LocalWorld =mTranslate * mRotate *  mScale;
-
          LocalWorld = Mat4::Scale( scale.x, scale.y, scale.z );
          LocalWorld.rotate(orientation);
          LocalWorld.translate( position.x, position.y, position.z );
@@ -173,7 +174,7 @@ class CORE_PUBLIC Node
         UpdateAbsolutePosition();
         for (u32 i = 0; i < scripts.size(); i++)
         {
-            scripts[i]->Update();
+            scripts[i]->Update(1);
         }
     }
     virtual void Render()
@@ -209,14 +210,6 @@ class CORE_PUBLIC Node
     {
              return Mat4::Transform(AbsoluteTransformation, position);
     }
-
-    // void Rotate(float angle,  float x, float y, float z)
-    // {
-
-    //     orientation.rotate(angle, x, y, z);
-    // }
-
-
     void SetName(const std::string &n){name = n;}
 };
 
@@ -226,7 +219,7 @@ class CORE_PUBLIC Joint : public Node
 {
     public:
         Mat4 offset;
-        Joint() : Node()    {       }
+        Joint() : Node()    {  type = Node::DEFAULT;     }
         virtual ~Joint()    {       }
         void Render() override;
 

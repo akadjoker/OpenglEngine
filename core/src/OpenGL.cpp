@@ -2,7 +2,7 @@
 
 #include "pch.h"
 #include "OpenGL.h"
-
+#include <cstring>
 namespace glExt
 {
 	bool EXT_framebuffer_object = false;
@@ -593,27 +593,29 @@ bool isExtensionSupported( const char *extName )
 
 bool getOpenGLVersion()
 {
-	char version[8];
-	const char* str = (const char *)glGetString( GL_VERSION );
+     char version[16] = {0};
+    const char* str = (const char *)glGetString(GL_VERSION);
 
-	if ( !str )
-		return false;
+    if (!str)
+        return false;
 
-	size_t len = strlen( str );
-	if( len >= 8 ) len = 7;
-	
-	strncpy( version, str, len );
-	version[len] = '\0';
+  
+    size_t len = strlen(str);
+    if (len >= sizeof(version)) len = sizeof(version) - 1;
 
-	char *pos1 = strtok( version, "." );
-	if( pos1 )
-	{
-		glExt::majorVersion = atoi( pos1 );
-		char *pos2 = strtok( 0x0, ". " );
-		if( pos2 ) glExt::minorVersion = atoi( pos2 );
-	}
+    memcpy(version, str, len);
+    version[len] = '\0'; // Ensure null termination
 
-	return true;
+    char *pos1 = strtok(version, ".");
+    if (pos1)
+    {
+        glExt::majorVersion = atoi(pos1);
+        char *pos2 = strtok(NULL, ". ");
+        if (pos2)
+            glExt::minorVersion = atoi(pos2);
+    }
+
+    return true;
 }
 
 

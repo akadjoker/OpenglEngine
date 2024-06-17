@@ -15,6 +15,9 @@ class KeyFrame;
 class Animator;
 class Entity;
 
+
+
+
 struct PosKeyFrame
 {
     Vec3 pos;
@@ -49,114 +52,16 @@ struct KeyFrame
 
  
 
-    KeyFrame()
-    {
-       
-    }
+    KeyFrame()    {           }
+    KeyFrame(KeyFrame *t);
 
+    ~KeyFrame()    {    }
 
-
-     KeyFrame(KeyFrame *t)
-    {
-        if ((!t) || (t->numPositionKeys() == 0) || (t->numRotationKeys() == 0))
-        {
-
-            LogError("Null animation pointer or nor frames");
-            return;
-        }
-
-     
-       
-        for (u32 i = 0; i < t->numPositionKeys(); i++)
-        {
-            positionKeyFrames.push_back(t->positionKeyFrames[i]);
-            
-        }
-
-        
-        for (u32 i = 0; i < t->numRotationKeys(); i++)
-        {
-            rotationKeyFrames.push_back(t->rotationKeyFrames[i]);
-        }
-    }
-
-    ~KeyFrame()
-    {
-    }
-
-    void AddPositionKeyFrame(float frame, const Vec3 &pos)
-    {
-        positionKeyFrames.push_back(PosKeyFrame(pos, frame));
-    }
-
-    void AddRotationKeyFrame(float frame, const Quaternion &rot)
-    {
-
-        rotationKeyFrames.push_back(RotKeyFrame(rot, frame));
-    }
-
-    int GetPositionIndex(float animationTime)
-    {
-         // SDL_Log("KeyFrame time %f  %ld",animationTime,positionKeyFrames.size());
-        for (u32 index = 0; index < positionKeyFrames.size() - 1; ++index)
-        {
-            if (animationTime < positionKeyFrames[index + 1].frame)
-                return index;
-        }
-      
-        DEBUG_BREAK_IF(true);
-        return 0;
-    }
-
-    int GetRotationIndex(float animationTime)
-    {
-        for (u32 index = 0; index < rotationKeyFrames.size() - 1; ++index)
-        {
-            if (animationTime < rotationKeyFrames[index + 1].frame)
-                return index;
-        }
-     //   SDL_Log("KeyFrame time %f  %ld",animationTime,rotationKeyFrames.size());
-        DEBUG_BREAK_IF(true);
-        return 0;
-    }
-
-    float GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)
-    {
-        float scaleFactor = 0.0f;
-        float midWayLength = animationTime - lastTimeStamp;
-        float framesDiff = nextTimeStamp - lastTimeStamp;
-        scaleFactor = midWayLength / framesDiff;
-        return scaleFactor;
-    }
-
-    Quaternion AnimateRotation(float movetime)
-    {
-        if (rotationKeyFrames.size() == 1)
-        {
-            return rotationKeyFrames[0].rot;
-        }
-        int currentIndex = GetRotationIndex(movetime);
-        int nextIndex = currentIndex + 1;
-
-        float factor = GetScaleFactor(rotationKeyFrames[currentIndex].frame, rotationKeyFrames[nextIndex].frame, movetime);
-
-      //    SDL_Log(" %f %f %f",rotationKeyFrames[currentIndex].frame, rotationKeyFrames[nextIndex].frame,movetime);
-
-        return Quaternion::Slerp(rotationKeyFrames[currentIndex].rot, rotationKeyFrames[nextIndex].rot, factor);
-    }
-    Vec3 AnimatePosition(float movetime)
-    {
-        if (positionKeyFrames.size() == 1)
-        {
-            return positionKeyFrames[0].pos;
-        }
-        int currentIndex = GetPositionIndex(movetime);
-        int nextIndex = currentIndex + 1;
-
-        float factor = GetScaleFactor(positionKeyFrames[currentIndex].frame, positionKeyFrames[nextIndex].frame, movetime);
-        return Vec3::Lerp(positionKeyFrames[currentIndex].pos, positionKeyFrames[nextIndex].pos, factor);
-    }
-
+    int GetPositionIndex(float animationTime);
+    int GetRotationIndex(float animationTime);
+    float GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime);
+    Quaternion AnimateRotation(float movetime);
+    Vec3 AnimatePosition(float movetime);
     u32 numRotationKeys() const { return rotationKeyFrames.size(); }
     u32 numPositionKeys() const { return positionKeyFrames.size(); }
 
@@ -168,6 +73,16 @@ struct KeyFrame
     void setRotationKey(int frame, const Quaternion &q)
     {
         rotationKeyFrames[frame].rot = q;
+    }
+    void AddPositionKeyFrame(float frame, const Vec3 &pos)
+    {
+        positionKeyFrames.push_back(PosKeyFrame(pos, frame));
+    }
+
+    void AddRotationKeyFrame(float frame, const Quaternion &rot)
+    {
+
+        rotationKeyFrames.push_back(RotKeyFrame(rot, frame));
     }
 
     
@@ -199,122 +114,50 @@ struct Frame
 
 class CORE_PUBLIC Animation
 {
+    private:
+        u64 n_frames;
+        u64 state;
+        u64 method;
+        float currentTime;
+        float duration;
+        float fps;
+        int mode;
+        bool isEnd;
+        std::vector<Frame*> frames;
+        std::map<std::string, Frame*> framesMap;
+
     public:
     enum{LOOP=0,		PINGPONG=1,	ONESHOT=2};
     enum{Stoped=0, Looping=1, Playing=2 };
     std::string name;
-    std::vector<Frame*> frames;
-    std::map<std::string, Frame*> framesMap;
-    u64 n_frames;
-    u64 state;
-    u64 method;
-    float currentTime;
-    float duration;
-    float fps;
-    int mode;
-    bool isEnd;
-
-
-
-
-
-    Animation()
-    {
-        state = Stoped;
-        method = 0;
-        currentTime = 0.0f;
-        fps = 30.0f;
-        mode = LOOP;
-        isEnd = false;
-    }
+   
+    Animation(const std::string &name);
+    ~Animation();
 
     void Force();
-
 
     bool Save(const std::string &name);
     bool Load(const std::string &name);
 
+    float GetDuration();
+    float GetTime();
+    float GetFPS();
+    int GetMode();
+    u64 GetState(); 
+
+    std::string GetName() const { return name; }
+
     
 
-    bool Play(u32 mode, float fps)
-    {
-        if (state == Stoped)
-        {
-            state = Playing;
-            this->mode = mode;
-            this->fps = fps;
-            currentTime = 0.0f;
-            return true;
-        }
-        return false;
-    }
+    bool Play(u32 mode, float fps);
+    bool Stop();
+    bool IsEnded();
 
-
-
-    bool Stop()
-    {
-        if (state == Playing)
-        {
-            state = Stoped;
-            currentTime = 0.0f;
-            isEnd = true;
-      
-            return true;
-        }
-        return false;
-    }
-
-    Frame *AddFrame(std::string name)
-    {
-        Frame *frame = new Frame();
-        frame->name = name;
-        frames.push_back(frame);
-        framesMap[name] = frame;
-        return frame;
-    }
-
-    bool IsEnded()
-    {
-        if (state == Stoped)
-        {
-            return true;
-        }
-        return isEnd;
-    }
-
-    ~Animation()
-    {
-        for (u32 i = 0; i < frames.size(); i++)
-        {
-            delete frames[i];
-        }
-        frames.clear();
-
-    }
-
-    Frame *GetFrame(std::string name)
-    {
-        if (framesMap.find(name) == framesMap.end())
-        {
-            return NULL;
-        }
-        return framesMap[name];
-    }
-
-    Frame *GetFrame(int index)
-    {
-        if (index < 0 || index >= (int)frames.size())
-        {
-            return NULL;
-        }
-        return frames[index];
-    }
+    Frame *AddFrame(std::string name);
+    Frame *GetFrame(std::string name);
+    Frame *GetFrame(int index);
 
     void Update(float elapsed);
-
-
-        
-
 };
 
 
@@ -323,72 +166,28 @@ class CORE_PUBLIC Animation
 class CORE_PUBLIC Animator
 {
   public:
+      Animator(Entity *parent);
+      ~Animator();
 
+      void Update(float elapsed);
 
+      void SaveAllFrames(const std::string &path);
 
+      Animation *LoadAnimation(const std::string &name);
 
-    Animator(Entity *parent)
-    {
-        currentAnimation = nullptr;
- 
-        blendFactor = 0.0f;
-        blendTime = 0.0f;
-        blending = false;
-        currentAnimationName = "";
+      Animation *AddAnimation(const std::string &name);
 
-        entity = parent;
-    
+      Animation *GetAnimation(const std::string &name);
 
-     }
+      Animation *GetAnimation(int index);
 
-    ~Animator()
-    {
-        for (u32 i = 0; i < m_animations.size(); i++)
-        {
-            delete m_animations[i];
-        }
-        
+      u32 numAnimations() const
+      {
+          return m_animations.size(); 
     }
-
-    void Update(float elapsed);
-
-    void SaveAllFrames(const std::string &path);
-
-    
-    Animation * LoadAnimation(const std::string &name);
-
-    Animation * AddAnimation(const std::string &name);
-
-
-    Animation * GetAnimation(const std::string &name)
-    {
-        if (m_animations_map.find(name) == m_animations_map.end())
-        {
-            return NULL;
-        }
-        return m_animations_map[name];
-    }
-
-    Animation * GetAnimation(int index)
-    {
-        if (index < 0 || index >= (int)m_animations.size())
-        {
-            return NULL;
-        }
-        return m_animations[index];
-    }
-
-
-
-    u32 numAnimations() const { return m_animations.size(); }
 
     void SetIgnorePosition(const std::string &name, bool ignore);
     void SetIgnoreRotation(const std::string &name, bool ignore);
-
-
-
-
-   
 
 
     bool Play(const std::string &name, int mode=Animation::LOOP,  float blendTime = 0.25f);
@@ -408,7 +207,7 @@ class CORE_PUBLIC Animator
   float GetCurrentFrame()
   {
     if (!currentAnimation) return 0.0f;
-    return currentAnimation->currentTime;
+    return currentAnimation->GetTime();
  }
 
 
@@ -456,12 +255,13 @@ class CORE_PUBLIC Entity : public Node
     std::vector<SkinSurface *> surfaces;
     std::vector<Material *> materials;
     std::vector<Mat4> bones;
-
     Animator *animator;
+    
 
     Entity()
     {
 
+       type = Node::ENTITY;
        animator = new Animator(this);
 
         bones.reserve(80);

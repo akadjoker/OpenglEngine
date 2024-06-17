@@ -70,8 +70,9 @@ class  CORE_PUBLIC  System
     const char *GetFileNameWithoutExt(const char *filePath);    // Get filename string without extension (uses static string)
     const char *GetDirectoryPath(const char *filePath);         // Get full path for a given fileName with path (uses static string)
     const char *GetPrevDirectoryPath(const char *dirPath);      // Get previous directory path for a given path (uses static string)
-    const char *GetWorkingDirectory(void);                      // Get current working directory (uses static string)
-    const char *GetApplicationDirectory(void);                  // Get the directory if the running application (uses static string)
+    
+    char *GetWorkingDirectory(void);                      // Get current working directory (uses static string)
+    char *GetApplicationDirectory(void);                  // Get the directory if the running application (uses static string)
 
 
     bool ChangeDirectory(const char *dir);                      // Change working directory, return true on success

@@ -3,6 +3,184 @@
 #include "Animation.hpp"
 
 
+  KeyFrame::KeyFrame(KeyFrame *t)
+    {
+        if ((!t) || (t->numPositionKeys() == 0) || (t->numRotationKeys() == 0))
+        {
+
+            LogError("Null animation pointer or nor frames");
+            return;
+        }
+
+     
+       
+        for (u32 i = 0; i < t->numPositionKeys(); i++)
+        {
+            positionKeyFrames.push_back(t->positionKeyFrames[i]);
+            
+        }
+
+        
+        for (u32 i = 0; i < t->numRotationKeys(); i++)
+        {
+            rotationKeyFrames.push_back(t->rotationKeyFrames[i]);
+        }
+    }
+
+ int KeyFrame::GetPositionIndex(float animationTime)
+    {
+         // SDL_Log("KeyFrame time %f  %ld",animationTime,positionKeyFrames.size());
+        for (u32 index = 0; index < positionKeyFrames.size() - 1; ++index)
+        {
+            if (animationTime < positionKeyFrames[index + 1].frame)
+                return index;
+        }
+      
+        DEBUG_BREAK_IF(true);
+        return 0;
+    }
+
+    int KeyFrame::GetRotationIndex(float animationTime)
+    {
+        for (u32 index = 0; index < rotationKeyFrames.size() - 1; ++index)
+        {
+            if (animationTime < rotationKeyFrames[index + 1].frame)
+                return index;
+        }
+     //   SDL_Log("KeyFrame time %f  %ld",animationTime,rotationKeyFrames.size());
+        DEBUG_BREAK_IF(true);
+        return 0;
+    }
+
+    float KeyFrame::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)
+    {
+        float scaleFactor = 0.0f;
+        float midWayLength = animationTime - lastTimeStamp;
+        float framesDiff = nextTimeStamp - lastTimeStamp;
+        scaleFactor = midWayLength / framesDiff;
+        return scaleFactor;
+    }
+
+    Quaternion KeyFrame::AnimateRotation(float movetime)
+    {
+        if (rotationKeyFrames.size() == 1)
+        {
+            return rotationKeyFrames[0].rot;
+        }
+        int currentIndex = GetRotationIndex(movetime);
+        int nextIndex = currentIndex + 1;
+
+        float factor = GetScaleFactor(rotationKeyFrames[currentIndex].frame, rotationKeyFrames[nextIndex].frame, movetime);
+
+      //    SDL_Log(" %f %f %f",rotationKeyFrames[currentIndex].frame, rotationKeyFrames[nextIndex].frame,movetime);
+
+        return Quaternion::Slerp(rotationKeyFrames[currentIndex].rot, rotationKeyFrames[nextIndex].rot, factor);
+    }
+    Vec3 KeyFrame::AnimatePosition(float movetime)
+    {
+        if (positionKeyFrames.size() == 1)
+        {
+            return positionKeyFrames[0].pos;
+        }
+        int currentIndex = GetPositionIndex(movetime);
+        int nextIndex = currentIndex + 1;
+
+        float factor = GetScaleFactor(positionKeyFrames[currentIndex].frame, positionKeyFrames[nextIndex].frame, movetime);
+        return Vec3::Lerp(positionKeyFrames[currentIndex].pos, positionKeyFrames[nextIndex].pos, factor);
+    }
+
+//-------------------------------------------------------------------------------
+// Animation
+//-------------------------------------------------------------------------------
+    Animation::Animation(const std::string &name)
+    {
+        state = Stoped;
+        method = 0;
+        currentTime = 0.0f;
+        fps = 30.0f;
+        mode = LOOP;
+        isEnd = false;
+        this->name = name;
+    }
+    
+
+    bool Animation::Play(u32 mode, float fps)
+    {
+        if (state == Stoped)
+        {
+            state = Playing;
+            this->mode = mode;
+            this->fps = fps;
+            currentTime = 0.0f;
+            return true;
+        }
+        return false;
+    }
+
+
+
+    bool Animation::Stop()
+    {
+        if (state == Playing)
+        {
+            state = Stoped;
+            currentTime = 0.0f;
+            isEnd = true;
+      
+            return true;
+        }
+        return false;
+    }
+
+    Frame *Animation::AddFrame(std::string name)
+    {
+        Frame *frame = new Frame();
+        frame->name = name;
+        frames.push_back(frame);
+        framesMap[name] = frame;
+        return frame;
+    }
+
+    bool Animation::IsEnded()
+    {
+        if (state == Stoped)
+        {
+            return true;
+        }
+        return isEnd;
+    }
+
+    Animation::~Animation()
+    {
+        for (u32 i = 0; i < frames.size(); i++)
+        {
+            delete frames[i];
+        }
+        frames.clear();
+
+    }
+
+    Frame *Animation::GetFrame(std::string name)
+    {
+        if (framesMap.find(name) == framesMap.end())
+        {
+            return NULL;
+        }
+        return framesMap[name];
+    }
+
+    Frame *Animation::GetFrame(int index)
+    {
+        if (index < 0 || index >= (int)frames.size())
+        {
+            return NULL;
+        }
+        return frames[index];
+    }
+
+
+
+
 bool Animation::Save(const std::string &path)
 {
 
@@ -123,6 +301,32 @@ bool Animation::Load(const std::string &fileName)
     stream.Close();
     return true;
            
+}
+
+float Animation::GetDuration()
+{
+    return duration;
+}
+
+float Animation::GetTime()
+{
+    return currentTime;
+}
+
+float Animation::GetFPS()
+{
+    return fps;
+}
+
+int Animation::GetMode()
+{
+
+    return mode;
+
+}
+u64 Animation::GetState()
+{   
+    return state;
 }
 
 
@@ -251,7 +455,33 @@ void Animation::Update(float elapsed)
 
 }
 
- //****************************************************************************
+//-------------------------------------------------------------------------------
+// Animator
+//-------------------------------------------------------------------------------
+
+ Animator::Animator(Entity *parent)
+    {
+        currentAnimation = nullptr;
+ 
+        blendFactor = 0.0f;
+        blendTime = 0.0f;
+        blending = false;
+        currentAnimationName = "";
+
+        entity = parent;
+    
+
+     }
+
+    Animator::~Animator()
+    {
+        for (u32 i = 0; i < m_animations.size(); i++)
+        {
+            delete m_animations[i];
+        }
+        
+    }
+
 void Animator::SaveAllFrames(const std::string &path)
 {
     for (u32 i = 0; i < m_animations.size(); i++)
@@ -262,7 +492,7 @@ void Animator::SaveAllFrames(const std::string &path)
 
 Animation * Animator::LoadAnimation(const std::string &name)
 {
-    Animation *a = new Animation();
+    Animation *a = new Animation(name);
     if (a->Load(name))
     {
         
@@ -300,12 +530,30 @@ void Animator::Update(float elapsed)
 
        
 }
- 
+
+
+    Animation * Animator::GetAnimation(const std::string &name)
+    {
+        if (m_animations_map.find(name) == m_animations_map.end())
+        {
+            return NULL;
+        }
+        return m_animations_map[name];
+    }
+
+    Animation * Animator::GetAnimation(int index)
+    {
+        if (index < 0 || index >= (int)m_animations.size())
+        {
+            return NULL;
+        }
+        return m_animations[index];
+    }
+
 
 Animation * Animator::AddAnimation(const std::string &name)
 {
-    Animation *a = new Animation();
-    a->name = name; 
+    Animation *a = new Animation(name);
 
     for (size_t i = 0; i < entity->joints.size(); ++i) 
     {
@@ -406,7 +654,7 @@ void Animator::updateAnim(float elapsed)
 
         if (currentAnimation)
         {
-            if (currentAnimationName == name && currentAnimation->state == Animation::Playing)
+            if (currentAnimationName == name && currentAnimation->GetState() == Animation::Playing)
             {
 
                 return false;
@@ -422,7 +670,7 @@ void Animator::updateAnim(float elapsed)
         }
        
         currentAnimation =  m_animations_map[name];
-        currentAnimation->Play(mode, currentAnimation->fps); 
+        currentAnimation->Play(mode, currentAnimation->GetFPS()); 
         currentAnimation->Force();
 
       
@@ -460,7 +708,7 @@ bool Animator::IsPlaying()
 
     if (currentAnimation)
     {
-        return currentAnimation->state == Animation::Playing;
+        return currentAnimation->GetState() == Animation::Playing;
     }
     return false;
 }

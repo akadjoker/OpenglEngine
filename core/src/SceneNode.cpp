@@ -262,8 +262,8 @@ void Model::CalculateBox()
 
 StaticNode::StaticNode()
 {
+    type = Node::DEFAULT;
 }
-
 
 StaticNode::~StaticNode()
 {
