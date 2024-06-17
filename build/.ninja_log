@@ -1,0 +1,25 @@
+# ninja log v5
+7	3553	1718641378982120400	core/CMakeFiles/core.dir/cmake_pch.hxx.gch	b93788d7add7dc9a
+3580	3924	1718641379371730600	core/CMakeFiles/core.dir/src/Math.cpp.o	be815a19c9278e86
+3580	4064	1718641379511016600	core/CMakeFiles/core.dir/src/Input.cpp.o	75553cf003e183d
+3925	4125	1718641379572017300	core/CMakeFiles/core.dir/src/pch.cpp.o	6501bf2426ff4240
+3579	4190	1718641379637873200	core/CMakeFiles/core.dir/src/Buffer.cpp.o	705c6cb441af1474
+7	4208	1718641379634991500	main/CMakeFiles/main.dir/cmake_pch.hxx.gch	44709de27773dd3b
+3582	4236	1718641379682988100	core/CMakeFiles/core.dir/src/Shader.cpp.o	d3e4ed35203b137c
+3583	4376	1718641379822197600	core/CMakeFiles/core.dir/src/Utils.cpp.o	dd59b7f27f1f5ff9
+3579	4435	1718641379882513600	core/CMakeFiles/core.dir/src/Device.cpp.o	bf6e433a6c2e36b8
+3581	4462	1718641379908884500	core/CMakeFiles/core.dir/src/OpenGL.cpp.o	bccdd2cdd16b203a
+3580	4489	1718641379935229600	core/CMakeFiles/core.dir/src/File.cpp.o	d1b73628c130f13e
+4212	4500	1718641379947232000	main/CMakeFiles/main.dir/src/mainpch.cpp.o	69472abfe74e1dd5
+3581	4586	1718641380033164700	core/CMakeFiles/core.dir/src/SceneNode.cpp.o	d43d4e48d289f146
+3581	4944	1718641380391650800	core/CMakeFiles/core.dir/src/Mesh.cpp.o	1de9cb0137c0a7eb
+3579	5451	1718641380898503900	core/CMakeFiles/core.dir/src/Batch.cpp.o	28a34003275a9970
+3578	5623	1718641381071046100	core/CMakeFiles/core.dir/src/Animation.cpp.o	b9c70e1f9b8429c8
+4210	5925	1718641381372806900	main/CMakeFiles/main.dir/src/Scene.cpp.o	739395a15a6846d3
+3582	9229	1718641384674925700	core/CMakeFiles/core.dir/src/Texture.cpp.o	dc5702320a684d9c
+12	132	1718641393320496300	core/libcore.a	912ad80ac28dd7fb
+18	451	1718641449579837200	main/CMakeFiles/main.dir/src/main.cpp.o	fb75fde348e79268
+452	695	1718641449821399200	../bin/main	b91a32f5ad510034
+16	498	1718641760847510400	main/CMakeFiles/main.dir/src/main.cpp.o	fb75fde348e79268
+16	1087	1718641761434330500	main/CMakeFiles/main.dir/src/Scene.cpp.o	739395a15a6846d3
+1087	1307	1718641761654155600	../bin/main	b91a32f5ad510034

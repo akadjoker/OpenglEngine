@@ -1,0 +1,8 @@
+/media/djoker/code/code2/cpp/Graphics/Engine/build/CMakeFiles/edit_cache.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/CMakeFiles/rebuild_cache.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/core/CMakeFiles/core.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/core/CMakeFiles/edit_cache.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/core/CMakeFiles/rebuild_cache.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/main.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/edit_cache.dir
+/media/djoker/code/code2/cpp/Graphics/Engine/build/main/CMakeFiles/rebuild_cache.dir
