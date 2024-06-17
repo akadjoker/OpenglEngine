@@ -66,40 +66,20 @@ class CORE_PUBLIC Node
     std::string name;
     std::string parentName;
 
-    Node()
-    {
-        name = "";
-        parent = nullptr;
-        position.set(0, 0, 0);
-        scale.set(1, 1, 1);
-        orientation.identity();
-        AbsoluteTransformation.identity();
-        shadow = false;
-        visible = true;
-        active = true;
-        done = false;
+    Node();
+    virtual ~Node();
 
-        
+    Script *AddScript(Script *s);
+    bool HasScript(const std::string &s);
+    bool RemoveScript(const std::string &s);
+
+    void SetParent(Node *p)
+    {
+        parent = p;
     }
 
-    Script *AddScript(Script *s)
-    {
-        s->node = this;
-        s->Load();
-        scripts.push_back(s);
-        return s;
-    }
 
-    virtual ~Node()
-    {
-        for (u32 i = 0; i < scripts.size(); i++)
-        {
-            
-            scripts[i]->UnLoad();
-            scripts[i]->node = nullptr;
-            delete scripts[i];
-        }
-    }
+
 
     void SetPosition(const Vec3 &p) 
     {
@@ -143,25 +123,7 @@ class CORE_PUBLIC Node
         scale.set(x, y, z);
     }
 
-    
-
-    const Mat4 GetRelativeTransformation()
-    {
-         LocalWorld = Mat4::Scale( scale.x, scale.y, scale.z );
-         LocalWorld.rotate(orientation);
-         LocalWorld.translate( position.x, position.y, position.z );
-
-        if (parent != nullptr)
-        {
-            Mat4 m_absTrans;
-            Mat4::fastMult43(m_absTrans, parent->AbsoluteTransformation, LocalWorld);
-            return m_absTrans;
-        }
-        else
-        {
-            return LocalWorld;
-        }
-    }
+    const Mat4 GetRelativeTransformation();
 
     void UpdateAbsolutePosition()
     {
@@ -237,8 +199,6 @@ class CORE_PUBLIC Model
         Mesh *AddMesh(const VertexFormat& vertexFormat,u32 material =0, bool dynamic = false);
         Material *AddMaterial();
 
-        
-
         bool Load(const std::string &fileName,const VertexFormat& vertexFormat);
 
 
@@ -284,16 +244,9 @@ class CORE_PUBLIC StaticNode : public Node
     public:
         StaticNode();
         virtual ~StaticNode();
-
-
         void AddModel(Model *model);
-    
-
         void Render() override;
-
         void RenderNoMaterial();
-
-
         void Release() override;
 
     private:

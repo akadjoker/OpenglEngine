@@ -8,15 +8,13 @@
 #include "Utils.hpp"
 #include "SceneNode.hpp"
 
+const u32 MAX_BONES = 80;
 
 class Node;
 class Joint;
 class KeyFrame;
 class Animator;
 class Entity;
-
-
-
 
 struct PosKeyFrame
 {
@@ -41,21 +39,16 @@ struct RotKeyFrame
     }
 };
 
-
-
 struct KeyFrame
 {
 
-  
     std::vector<PosKeyFrame> positionKeyFrames;
     std::vector<RotKeyFrame> rotationKeyFrames;
 
- 
-
-    KeyFrame()    {           }
+    KeyFrame() {}
     KeyFrame(KeyFrame *t);
 
-    ~KeyFrame()    {    }
+    ~KeyFrame() {}
 
     int GetPositionIndex(float animationTime);
     int GetRotationIndex(float animationTime);
@@ -84,53 +77,58 @@ struct KeyFrame
 
         rotationKeyFrames.push_back(RotKeyFrame(rot, frame));
     }
-
-    
 };
-
 
 struct Frame
 {
     std::string name;
     Vec3 position;
     Quaternion orientation;
-    KeyFrame   keys;
-    Vec3 src_pos,dest_pos;
-	Quaternion src_rot,dest_rot;
+    KeyFrame keys;
+    Vec3 src_pos, dest_pos;
+    Quaternion src_rot, dest_rot;
     bool pos;
     bool rot;
     bool IgnorePosition;
     bool IgnoreRotation;
     Frame()
     {
-       pos = false;
-       rot = false;
-       IgnorePosition = false;
-       IgnoreRotation = false;
+        pos = false;
+        rot = false;
+        IgnorePosition = false;
+        IgnoreRotation = false;
     }
 };
 
-
-
 class CORE_PUBLIC Animation
 {
-    private:
-        u64 n_frames;
-        u64 state;
-        u64 method;
-        float currentTime;
-        float duration;
-        float fps;
-        int mode;
-        bool isEnd;
-        std::vector<Frame*> frames;
-        std::map<std::string, Frame*> framesMap;
+private:
+    u64 n_frames;
+    u64 state;
+    u64 method;
+    float currentTime;
+    float duration;
+    float fps;
+    int mode;
+    bool isEnd;
+    std::vector<Frame *> frames;
+    std::map<std::string, Frame *> framesMap;
 
-    public:
-    enum{LOOP=0,		PINGPONG=1,	ONESHOT=2};
-    enum{Stoped=0, Looping=1, Playing=2 };
+public:
+    enum
+    {
+        LOOP = 0,
+        PINGPONG = 1,
+        ONESHOT = 2
+    };
+    enum
+    {
+        Stoped = 0,
+        Looping = 1,
+        Playing = 2
+    };
     std::string name;
-   
+
     Animation(const std::string &name);
     ~Animation();
 
@@ -143,11 +141,9 @@ class CORE_PUBLIC Animation
     float GetTime();
     float GetFPS();
     int GetMode();
-    u64 GetState(); 
+    u64 GetState();
 
     std::string GetName() const { return name; }
-
-    
 
     bool Play(u32 mode, float fps);
     bool Stop();
@@ -160,40 +156,36 @@ class CORE_PUBLIC Animation
     void Update(float elapsed);
 };
 
-
-
-
 class CORE_PUBLIC Animator
 {
-  public:
-      Animator(Entity *parent);
-      ~Animator();
+public:
+    Animator(Entity *parent);
+    ~Animator();
 
-      void Update(float elapsed);
+    void Update(float elapsed);
 
-      void SaveAllFrames(const std::string &path);
+    void SaveAllFrames(const std::string &path);
 
-      Animation *LoadAnimation(const std::string &name);
+    Animation *LoadAnimation(const std::string &name);
 
-      Animation *AddAnimation(const std::string &name);
+    Animation *AddAnimation(const std::string &name);
 
-      Animation *GetAnimation(const std::string &name);
+    Animation *GetAnimation(const std::string &name);
 
-      Animation *GetAnimation(int index);
+    Animation *GetAnimation(int index);
 
-      u32 numAnimations() const
-      {
-          return m_animations.size(); 
+    u32 numAnimations() const
+    {
+        return m_animations.size();
     }
 
     void SetIgnorePosition(const std::string &name, bool ignore);
     void SetIgnoreRotation(const std::string &name, bool ignore);
 
-
-    bool Play(const std::string &name, int mode=Animation::LOOP,  float blendTime = 0.25f);
+    bool Play(const std::string &name, int mode = Animation::LOOP, float blendTime = 0.25f);
 
     void Stop();
-    bool IsEnded() ;
+    bool IsEnded();
     bool IsPlaying();
 
     std::string GetCurrentAnimationName()
@@ -201,26 +193,22 @@ class CORE_PUBLIC Animator
         std::string s("");
         if (!currentAnimation)
             return s;
-        return currentAnimation->name; 
-  }
+        return currentAnimation->name;
+    }
 
-  float GetCurrentFrame()
-  {
-    if (!currentAnimation) return 0.0f;
-    return currentAnimation->GetTime();
- }
-
-
-
-
+    float GetCurrentFrame()
+    {
+        if (!currentAnimation)
+            return 0.0f;
+        return currentAnimation->GetTime();
+    }
 
 private:
-    
     std::vector<Animation *> m_animations;
     std::map<std::string, Animation *> m_animations_map;
-    Entity * entity;
+    Entity *entity;
 
-    Animation* currentAnimation;
+    Animation *currentAnimation;
 
     std::string currentAnimationName;
 
@@ -228,72 +216,52 @@ private:
     float blendTime;
     bool blending;
 
-
     void beginTrans();
     void updateTrans(float blend);
     void updateAnim(float elapsed);
-
-
-
-
-
 };
-
-
-  
-
-
-
-
-
-
 
 class CORE_PUBLIC Entity : public Node
 {
-    public:
+
     std::vector<Joint *> joints;
     std::vector<SkinSurface *> surfaces;
     std::vector<Material *> materials;
     std::vector<Mat4> bones;
     Animator *animator;
-    
 
-    Entity()
-    {
+    friend class Animation;
+    friend class Animator;
 
-       type = Node::ENTITY;
-       animator = new Animator(this);
+public:
+    Entity();
 
-        bones.reserve(80);
+    void UpdateAnimation(float dt);
 
-        for (int i = 0; i < 80; i++)
-        {
-            bones.push_back(Mat4::Identity());
-        }
+    Animation *LoadAnimation(const std::string &name);
 
-
-    }
-
-    void UpdateAnimation(float dt)
-    {
-
-        //   SDL_Log("CurrentTime : %f Duration : %f TicksPerSecond : %f DeltaTime : %f",m_CurrentTime,m_Duration,m_TicksPerSecond,m_DeltaTime);
-        animator->Update(dt);
-        for (u32 i = 0; i < joints.size(); i++)
-        {
-
-            Joint *b = joints[i];
-            b->Update();
-            Mat4::fastMult43(bones[i], b->AbsoluteTransformation, b->offset);
-        }
-    }
-
-
-    Animation * LoadAnimation(const std::string &name);
-
-    void Play(const std::string &name, int mode=Animation::LOOP,  float blendTime = 0.25f);
+    void Play(const std::string &name, int mode = Animation::LOOP, float blendTime = 0.25f);
 
     void SetTexture(int layer = 0, Texture2D *texture = nullptr);
+
+    u32 numJoints() const
+    {
+        return joints.size();
+    }
+    u32 numSurfaces() const
+    {
+        return surfaces.size();
+    }
+    u32 numBones() const
+    {
+        return bones.size();
+    }
+    u32 numMaterials() const
+    {
+        return materials.size();
+    }
+
+    Mat4 GetBone(u32 index) const;
 
     Material *AddMaterial()
     {
@@ -314,40 +282,14 @@ class CORE_PUBLIC Entity : public Node
         return surface;
     }
 
-    Joint *GetJoint(int id) { return joints[id]; }
-    Joint *FindJoint(const char *name)
-    {
-        for (u32 i = 0; i < joints.size(); i++)
-        {
-            if (strcmp(joints[i]->name.c_str(), name) == 0)
-            {
-                return joints[i];
-            }
-        }
-        return nullptr;
-    }
-    int GetJointIndex(const char *name)
-    {
-        for (u32 i = 0; i < joints.size(); i++)
-        {
-            if (strcmp(joints[i]->name.c_str(), name) == 0)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
+    Joint *GetJoint(u32 id);
+    Joint *FindJoint(const char *name);
+    int GetJointIndex(const char *name);
     void Render() override;
-
     void RenderNoMaterial();
-
-
-
     void Release() override;
 
-    
     bool Save(const std::string &name);
 
     bool Load(const std::string &name);
- 
 };

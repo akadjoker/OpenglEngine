@@ -166,8 +166,6 @@ Entity *Scene::LoadEntity(const std::string &name,bool castShadow)
 Model *Scene::LoadModel(const std::string &name)
 {
      
-
-
     Model *m = new Model();
     if (m->Load(name,VertexFormat(VertexElements, VertexElemntsCount)))
     {
@@ -185,7 +183,6 @@ StaticNode *Scene::CreateStaticNode(const std::string &name,bool castShadow)
     node->SetName(name);
     node->shadow = castShadow;
     m_nodes.push_back(node);
-  
     return node;
 }
 
@@ -494,9 +491,10 @@ void Scene::Render()
                     if (!entity->shadow || !entity->visible) continue;
                     Mat4 mat = entity->GetRelativeTransformation();
                     m_depthShader.SetMatrix4("model", mat.x);
-                    for (u32 b = 0; b < entity->bones.size(); b++)
+                    for (u32 b = 0; b < entity->numBones(); b++)
                     {
-                        m_depthShader.SetMatrix4(System::Instance().TextFormat("Joints[%d]", b), entity->bones[b].x); // model.bones
+                        const Mat4 &m = entity->GetBone(b);
+                        m_depthShader.SetMatrix4(System::Instance().TextFormat("Joints[%d]", b), m.x); // model.bones
                     }
                     entity->Render();
                 }
@@ -563,9 +561,10 @@ void Scene::Render()
         if (!entity->visible) continue;
         Mat4 mat = entity->GetRelativeTransformation();
         m_modelShader.SetMatrix4("model", mat.x);
-        for (u32 b = 0; b < entity->bones.size(); b++)
+        for (u32 b = 0; b < entity->numBones(); b++)
         {
-             m_modelShader.SetMatrix4(System::Instance().TextFormat("Joints[%d]", b), entity->bones[b].x); // model.bones
+            const Mat4 &m = entity->GetBone(b);
+            m_modelShader.SetMatrix4(System::Instance().TextFormat("Joints[%d]", b), m.x); // model.bones
         }
         entity->Render();
     }
@@ -665,90 +664,9 @@ bool Scene::LoadDepthShader()
 
 
 
-
-    {
-
-        const char *vertexShaderSource = GLSL(
-                layout (location = 0) in vec3 aPos;
-                layout (location = 1) in vec2 aTexCoords;
-
-                out vec2 TexCoords;
-
-                void main()
-                {
-                    TexCoords = aTexCoords;
-                    gl_Position = vec4(aPos, 1.0);
-                }
-        );
-
-        const char *fragmentShaderSource = GLSL(
-                out vec4 FragColor;
-
-                in vec2 TexCoords;
-
-                uniform sampler2D textureMap;
-
-
-                    //Bloom
-                const float Samples = 8.0;          // Pixels per axis; higher = bigger glow, worse performance
-                const float Quality = 3.0;          // Defines size factor: Lower = smaller glow, better quality
-
-
-                //blur
-                float offset[3] = float[](0.0, 1.3846153846, 3.2307692308);
-                float weight[3] = float[](0.2270270270, 0.3162162162, 0.0702702703);
-
-                vec4 Bloom(float samples, float quality);
-                vec4 Blur();
-
-                void main()
-                {
-                    
-                    //FragColor = texture(textureMap, TexCoords);
-                    FragColor = Bloom(Samples, Quality);
-                }
-                vec4 Bloom(float samples, float quality)
-                {
-                    vec2 size  = textureSize(textureMap, 0);
-                    vec4 sum = vec4(0);
-                    vec2 sizeFactor = vec2(1)/size*quality;
-                    vec4 colDiffuse = vec4(1,1,1,1);
-                    
-
-              
-                    vec4 source = texture(textureMap, TexCoords);
-
-                    const int range = 2;            // should be = (samples - 1)/2;
-
-                    for (int x = -range; x <= range; x++)
-                    {
-                        for (int y = -range; y <= range; y++)
-                        {
-                            sum += texture(textureMap, TexCoords + vec2(x, y)*sizeFactor);
-                        }
-                    }
-                   
-                    vec4 color = ((sum/(samples*samples)) + source)*colDiffuse;
-                    return color;
-                }
-                vec4 Blur()
-                {
-                     vec3 texelColor = texture(textureMap, TexCoords).rgb*weight[0];
-                     vec2 size  = textureSize(textureMap, 0);
-
-                    for (int i = 1; i < 3; i++)
-                    {
-                        texelColor += texture(textureMap, TexCoords + vec2(offset[i])/size.x, 0.0).rgb*weight[i];
-                        texelColor += texture(textureMap, TexCoords - vec2(offset[i])/size.x, 0.0).rgb*weight[i];
-                    }
-
-                    return   vec4(texelColor, 1.0);
-
-                }
-        );
         
         LogWarning("Loading Quad Shader");
-        if (!m_quadShader.Create(vertexShaderSource, fragmentShaderSource))
+        if (!m_quadShader.Load("assets/shaders/bloom.vert", "assets/shaders/bloom.frag"))
         {
             DEBUG_BREAK_IF(true);
             return false;
@@ -756,7 +674,7 @@ bool Scene::LoadDepthShader()
         m_quadShader.LoadDefaults();
         m_quadShader.SetInt("textureMap", 0);
 
-    }
+    
 
         return true;
 }

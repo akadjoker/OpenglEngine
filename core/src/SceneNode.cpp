@@ -3,6 +3,93 @@
 #include "SceneNode.hpp"
 
 
+//********************************************************************************************************************
+//NODE
+//********************************************************************************************************************
+Node::Node()
+{
+    parent = nullptr;
+    name = "";
+    position.set(0, 0, 0);
+    scale.set(1, 1, 1);
+    orientation.identity();
+    AbsoluteTransformation.identity();
+    shadow = false;
+    visible = true;
+    active = true;
+    done = false;
+}
+
+Script *Node::AddScript(Script *s)
+{
+        s->node = this;
+        s->Load();
+        scripts.push_back(s);
+        return s;
+
+}
+
+bool Node::HasScript(const std::string &s)
+{
+    for (u32 i = 0; i < scripts.size(); i++)
+    {
+        if (scripts[i]->name == s)
+            return true;
+    }
+    return false;
+}
+
+bool Node::RemoveScript(const std::string &s)
+{
+    for (u32 i = 0; i < scripts.size(); i++)
+    {
+        if (scripts[i]->name == s)
+        {
+            scripts.erase(scripts.begin() + i);
+            return true;
+        }
+    }
+    return false;
+}
+
+const Mat4 Node::GetRelativeTransformation()
+{
+         LocalWorld = Mat4::Scale( scale.x, scale.y, scale.z );
+         LocalWorld.rotate(orientation);
+         LocalWorld.translate( position.x, position.y, position.z );
+
+        if (parent != nullptr)
+        {
+            Mat4 m_absTrans;
+            Mat4::fastMult43(m_absTrans, parent->AbsoluteTransformation, LocalWorld);
+            return m_absTrans;
+        }
+        else
+        {
+            return LocalWorld;
+        }
+    
+}
+
+Node::~Node()
+{
+    for (u32 i = 0; i < scripts.size(); i++)
+    {
+        
+        scripts[i]->UnLoad();
+        scripts[i]->node = nullptr;
+        delete scripts[i];
+    }
+}
+
+
+
+
+
+//********************************************************************************************************************
+//JOINT
+//********************************************************************************************************************
+
 void Joint::Render() 
 {
 //     batch.SetColor(0, 1, 1);

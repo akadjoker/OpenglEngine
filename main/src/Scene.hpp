@@ -54,15 +54,17 @@ public:
 
 private:
     static Scene* m_singleton;
-    std::vector<Entity*> m_entities;
+    
+    std::vector<Entity*>     m_entities;
     std::vector<StaticNode*> m_nodes;
+
+
+
     std::vector<Model*> m_models;
-    std::vector<Vec3> m_lights;
+ 
     Shader m_modelShader;
     Shader m_depthShader;
-
     Shader m_debugShader;
-
     Shader m_quadShader;
 
 
@@ -76,5 +78,5 @@ private:
 
     bool LoadModelShader();
     bool LoadDepthShader();
-    void RenderLight(int index);
+  
 };
